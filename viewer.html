@@ -80,20 +80,34 @@
         return pi.toString().split('.')[1];
     }
 
+    // Calculate n digits after decimal place of x/y in base b
+    function* calculateNDecimalsOfRational(x, y, b=10) {
+      let remainder = x;
+      for (;;) {
+        let digit = Math.floor(remainder * b /  y)
+        remainder = (remainder * b) % y
+        console.log(digit)
+        yield digit
+      }
+    }
+
     $('#turtleCommandArea button.execim').click(async function() {
       const n = math.divide(1, math.complex(2, 3))
       // const imStr = n.im.toString().split(".")[1]
       // const realStr = n.re.toString().split(".")[1]
-      let total = 1000;
-      let iter = 100000000;
-      const realStr = calculatePI(iter)
-      const imStr = calculatePI(iter)
-      console.log(realStr)
+      let iters = 10000;
+      const base = 16
+      const realIter = calculateNDecimalsOfRational(1, 2, base)
+      const imIter = calculateNDecimalsOfRational(3, 12, base)
+      // const realStr = '1234'
+      // const imStr = '4671'
       // Calculate and "match" periodicity...
-      for (let i = 0; i < 1000; i++) {
-        turtle.turnDown((parseInt(realStr.charAt(i % realStr.length)) + 1) / 10 * 360)
-        turtle.turnRight((parseInt(imStr.charAt(i % imStr.length)) + 1) / 10 * 720)
-        turtle.forward(40)
+      // for (let i = 0; i < iters; i++) {
+      for(;;){
+        turtle.turnDown((imIter.next().value + 1)/ base * 360)
+        turtle.turnRight((realIter.next().value + 1)/ base * 180)
+        // turtle.turnRight((imIter.next().val + 1)/ base * 360)
+        turtle.forward(10)
         await new Promise((res, rej) => setTimeout(res, 4))
       }
     });

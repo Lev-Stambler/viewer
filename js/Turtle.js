@@ -25,7 +25,6 @@ function Turtle (scene) {
     self.oldPosition = newPos;
     self.turtleMesh.position = newPos;
 
-    console.log (self.position.toString())
   }
 
   this.backward = function(steps){

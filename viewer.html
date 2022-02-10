@@ -12,6 +12,7 @@
     </style>
 
     <link rel='stylesheet' type='text/css' href='css/turtle_commands.css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.1.1/math.js"></script>
     <script type='text/javascript' src='js/lib/Three.js'></script>
     <script type='text/javascript' src='js/lib/Stats.js'></script>
     <script type='text/javascript' src='js/lib/THREEx.WindowResize.js'></script>
@@ -35,7 +36,8 @@
         turtle.forward (10);
         }
       </textarea>
-      <button>Execute</button>
+      <button class="exectext">Execute</button>
+      <button class="execim">Execute Imaginary</button>
     </div>
   </div>
 
@@ -55,8 +57,45 @@
       });
     });
 
-    $('#turtleCommandArea button').click(function() {
+    $('#turtleCommandArea button.exectext').click(function() {
       eval($('#turtleCommandArea textarea').val());
+    });
+    function calculatePI(iterations = 10000){
+        let pi = 0;
+        let iterator = sequence();
+
+        for(let i = 0; i < iterations; i++){
+            pi += 4 /  iterator.next().value;
+            pi -= 4 / iterator.next().value;
+        }
+
+        function* sequence() {
+          let i = 1;
+          while(true){
+            yield i;
+            i += 2;
+          }
+        }
+
+        return pi.toString().split('.')[1];
+    }
+
+    $('#turtleCommandArea button.execim').click(async function() {
+      const n = math.divide(1, math.complex(2, 3))
+      // const imStr = n.im.toString().split(".")[1]
+      // const realStr = n.re.toString().split(".")[1]
+      let total = 1000;
+      let iter = 100000000;
+      const realStr = calculatePI(iter)
+      const imStr = calculatePI(iter)
+      console.log(realStr)
+      // Calculate and "match" periodicity...
+      for (let i = 0; i < 1000; i++) {
+        turtle.turnDown((parseInt(realStr.charAt(i % realStr.length)) + 1) / 10 * 360)
+        turtle.turnRight((parseInt(imStr.charAt(i % imStr.length)) + 1) / 10 * 720)
+        turtle.forward(40)
+        await new Promise((res, rej) => setTimeout(res, 4))
+      }
     });
   </script>
 

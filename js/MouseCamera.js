@@ -18,7 +18,6 @@ function MouseCamera (scene, renderer) {
   this.isMouseDown = false;
   this.onMouseDownPosition = new THREE.Vector2();
 
-  this.gridLine;
   this.gridSize = 30;
   this.gridSpacing = 50;
   this.gridY = 0;
@@ -61,61 +60,7 @@ function MouseCamera (scene, renderer) {
     this.update();
   }
 
-  this.toggleTargetSphere = function () {
-    if (self.sphere == null) {
-      self.addTargetSphere();
-      return;
-    }
-
-    self.sphere.visible = !self.sphere.visible;
-  }
-
-  this.addTargetSphere = function () {
-    self.sphere = new THREE.Mesh(new THREE.SphereGeometry( 50, 50, 50),
-                                 new THREE.MeshBasicMaterial({color:0x00fa00, opacity:0.6, transparent:true}));
-
-                                 self.sphere.position = self.targetPosition;
-                                 scene.addObject( self.sphere );
-                                 console.log ('a');
-  }
-
-  this.toggleGrid = function (){
-    if (self.gridLine == null) {
-      self.addGrid ();
-      return;
-    }
-
-    self.gridLine.visible = !self.gridLine.visible;
-  }
-
-  this.addGrid = function () {
-    var length = self.gridSize * self.gridSpacing;
-    var offset = length/2
-
-    var g = new THREE.Geometry();
-
-    for (var i = 0; i <= self.gridSize; i++)
-    {
-      var left = (i * self.gridSpacing) - offset;
-      g.vertices.push(new THREE.Vertex(new THREE.Vector3(left, self.gridY, offset)));
-      g.vertices.push(new THREE.Vertex(new THREE.Vector3(left, self.gridY, -offset)));
-      g.vertices.push(new THREE.Vertex(new THREE.Vector3(left, self.gridY, offset)));
-    }
-
-    for (var j = 0; j < self.gridSize; j++)
-    {
-      var top = (j * self.gridSpacing) - offset;
-      g.vertices.push(new THREE.Vertex(new THREE.Vector3(offset, self.gridY, top)));
-      g.vertices.push(new THREE.Vertex(new THREE.Vector3(-offset, self.gridY, top)));
-      g.vertices.push(new THREE.Vertex(new THREE.Vector3(offset, self.gridY, top)));
-    }
-
-
-    var m  = new THREE.LineBasicMaterial( { color: 0xa0a0a0, opacity: 1 } );
-    self.gridLine = new THREE.Line(g, m );
-
-    self.scene.addChild (self.gridLine);
-  }
+  
 
 
   this.render = function () {

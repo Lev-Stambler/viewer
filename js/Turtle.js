@@ -86,6 +86,15 @@ function Turtle (scene) {
 
     self.line = new THREE.Line( g2, material );
     self.line.matrixAutoUpdate = true;
+    const tl = gsap.timeline();
+
+    const tween = gsap.to(material, {
+      duration: 10,
+      opacity: 0,
+      // color: 0xff0000
+    })
+    tl.add(tween)
+    // TweenMax.to(material, 1, { opacity: 1 });
     scene.addChild (self.line);
   }
 }
